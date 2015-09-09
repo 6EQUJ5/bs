@@ -26,8 +26,21 @@ int main(int argc, char** argv)
 
     bit_string_fprintf(stderr, "%c%q%c\n",'[', bstr1, ']');
 
+    bit_string_rotate_no_carry (bstr1, 419);
+    bit_string_fprintf(stderr, "%c%q%c%d\n",'[', bstr1, ']', 
+            bit_string_length(bstr1));
+
+    bit_string * bstr3 = bit_string_clone (bstr2);
+    bit_string_rotate_no_carry (bstr3, 1);
+    bit_string_fprintf(stderr, "%c%q%c\n[%q]\n",'[', bstr3, ']',bstr2);
+
+    bit_string_xor(bstr3,bstr1);
+
+    bit_string_fprintf(stderr, "[%q]\n", bstr3);
+
     bit_string_free(bstr1);
     bit_string_free(bstr2);
+    bit_string_free(bstr3);
 
     return 0;
 }

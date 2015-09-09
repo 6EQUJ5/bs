@@ -23,6 +23,8 @@ typedef struct _module_bit_string_opaque bit_string;
 EXTERN bit_string* bit_string_alloc(size_t);
 EXTERN void bit_string_free(bit_string*);
 
+EXTERN bit_string* bit_string_clone(bit_string*);
+
 EXTERN size_t bit_string_length (bit_string*);
 
 EXTERN bit_string * bit_string_resize (bit_string *, size_t);
@@ -31,6 +33,9 @@ EXTERN bit_string * bit_string_set_bit (bit_string*,size_t);
 EXTERN bit_string * bit_string_set_bits (bit_string*,...);
 EXTERN bit_string * bit_string_not (bit_string *);
 EXTERN bit_string * bit_string_and (bit_string *, bit_string *);
+EXTERN bit_string * bit_string_or (bit_string *, bit_string *);
+EXTERN bit_string * bit_string_xor (bit_string *, bit_string *);
+EXTERN bit_string * bit_string_rotate_no_carry (bit_string *, size_t);
 
 /* print a format string by also handling a new conversion 
  * specifier for the new type

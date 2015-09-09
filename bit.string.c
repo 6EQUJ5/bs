@@ -48,6 +48,13 @@ bit_string* bit_string_alloc(size_t size) {
     return intern;
 }
 
+bit_string* bit_string_clone(bit_string* bs) {
+    bit_string * clone = bit_string_alloc(bs -> length);
+    clone -> carry = bs -> carry;
+    memcpy(clone->internal_string, bs->internal_string, bs->length);
+    return clone;
+}
+
 void bit_string_free (bit_string* bstr) {
     free(bstr -> internal_string);
     free(bstr);
@@ -103,6 +110,49 @@ bit_string * bit_string_not (bit_string * bstr) {
             bstr_intern[index] == 0x00 ? 0x01 : 0x00;
 
     return bstr;
+}
+
+bit_string * bit_string_rotate_no_carry (bit_string * bs, size_t cnt) {
+    size_t i, len = bs -> length;
+    unsigned char * bsin = bs -> internal_string;
+    cnt = cnt % len;
+    if (cnt == 0)
+        return bs;
+    unsigned char * tmp_buf = malloc (sizeof (unsigned char) * cnt);
+    for(i = 0; i < cnt; i++)
+        tmp_buf [i] = bsin [len - cnt + i];
+    for(i = 0; i < len - cnt; i++)
+        bsin [len - i -1] = bsin [len - cnt - i - 1];
+    for(i = 0; i < cnt; i++)
+        bsin [i] = tmp_buf[i];
+    free(tmp_buf);
+    return bs;
+}
+
+bit_string * bit_string_xor (bit_string * bs1, bit_string * bs2) {
+    size_t index = 0, bsl1, bsl2;
+    bsl1 = bs1 -> length;
+    bsl2 = bs2 -> length;
+    unsigned char * bsint1 = bs1 -> internal_string;
+    unsigned char * bsint2 = bs2 -> internal_string;
+    for (; index < bsl1 && index < bsl2; index++)
+        bsint1[index] = (bsint1[index] != bsint2[index] ) ?
+            0x01 : 0x00;
+
+    return bs1;
+}
+
+bit_string * bit_string_or (bit_string * bs1, bit_string * bs2) {
+    size_t index = 0, bsl1, bsl2;
+    bsl1 = bs1 -> length;
+    bsl2 = bs2 -> length;
+    unsigned char * bsint1 = bs1 -> internal_string;
+    unsigned char * bsint2 = bs2 -> internal_string;
+    for (; index < bsl1 && index < bsl2; index++)
+        bsint1[index] = (bsint1[index] != 0x00 && bsint2[index] != 0x00) ?
+            0x00 : 0x01;
+
+    return bs1;
 }
 
 bit_string * bit_string_and (bit_string * bs1, bit_string * bs2) {
