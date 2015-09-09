@@ -25,6 +25,8 @@ EXTERN void bit_string_free(bit_string*);
 
 EXTERN size_t bit_string_length (bit_string*);
 
+EXTERN bit_string * bit_string_resize (bit_string *, size_t);
+
 EXTERN bit_string * bit_string_set_bit (bit_string*,size_t);
 EXTERN bit_string * bit_string_set_bits (bit_string*,...);
 EXTERN bit_string * bit_string_not (bit_string *);

@@ -22,8 +22,9 @@ int main(int argc, char** argv)
     bit_string_fprintf(stderr, "%c%q%c\n",'[', 
             bit_string_not(bstr1), ']');
 
+    bit_string_resize(bit_string_resize(bstr1, 17), 23);
 
-
+    bit_string_fprintf(stderr, "%c%q%c\n",'[', bstr1, ']');
 
     bit_string_free(bstr1);
     bit_string_free(bstr2);

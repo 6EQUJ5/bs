@@ -22,7 +22,7 @@ static void _init_to_zero(bit_string* bstr) {
     size_t index, bstr_length = bstr -> length;
     unsigned char * value = bstr -> internal_string;
     for (index = 0; index < bstr_length; index++)
-        value [index] = 0x00;
+        value [index] = bstr -> carry;
 
 }
 
@@ -42,6 +42,7 @@ bit_string* bit_string_alloc(size_t size) {
     bit_string* intern = malloc(sizeof(bit_string));
     intern -> internal_string = malloc(sizeof(unsigned char) * size);
     intern -> length = size;
+    intern -> carry = 0x00;
     _init_to_zero(intern);
 
     return intern;
@@ -54,6 +55,18 @@ void bit_string_free (bit_string* bstr) {
 
 size_t bit_string_length (bit_string* bs) {
     return bs -> length;
+}
+
+bit_string * bit_string_resize (bit_string * bs, size_t size) {
+    unsigned char * bsin = bs -> internal_string;
+    unsigned char * new_bsin = malloc (sizeof(unsigned char) * size);
+    bs -> internal_string = new_bsin;
+    bs -> length = size;
+    _init_to_zero (bs);
+    memcpy (new_bsin, bsin, size);
+    free (bsin);
+    
+    return bs;
 }
 
 bit_string * bit_string_set_bit (bit_string* bstr,size_t position) {
